@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="1.7" client="site"
+	method="upgrade"
+>
+  <name>Sape Module</name>
+  <creationDate>Febrary 2012</creationDate>
+  <author>Andrew J. Lutsenko</author>
+  <authorEmail>lucenko@gmail.com</authorEmail>
+  <authorUrl>http://blog.yousoft.ru</authorUrl>
+  <copyright>(C) 2007-2012 Andrew J. Lutsenko</copyright>
+  <license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+  <version>0.11.0</version>
+  <description><![CDATA[
+Этот модуль позволяет вставлять рекламный блок с ссылками из <a href="http://www.sape.ru/r.9e8c43ae3e.php" target="_blank">sape.ru</a>.<br />
+Сайт разработчика: <a href="http://blog.yousoft.ru" target="_blank">http://blog.yousoft.ru</a>.<br />
+Регистрация доменнов по низким ценам: <a href="http://www.iregs.ru" target="_blank">iregs.ru</a> и <a href="http://xn----htbd1agbcej.xn--p1ai" target="_blank">про-домен.рф</a>.<br />
+Блог для разработчиков Joomla <a href="http://www.dev-joomla.ru" target="_blank">www.dev-joomla.ru</a>.
+			]]>
+</description>
+  <files>
+    <filename module="mod_sape">mod_sape.php</filename>
+  </files>
+
+  <config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="sp_sape_user" type="text" default="" label="Уникальный номер" description="Уникальный номер"/>
+
+				<field name="sp_fetch_remote_type" type="list" default="0" label="Способ подключения" description="Способ подключения к удалённому серверу">
+					<option value="0">По умолчанию</option>
+					<option value="1">file_get_contents</option>
+					<option value="2">curl</option>
+					<option value="3">socket</option>
+				</field>
+				<field name="sp_redirect_url" type="list" default="1" label="Использовать REDIRECT_URL, SCRIPT_URL" description="Если вы используете SEF лучше включить REDIRECT_URL, если не помогает SCRIPT_URL.">
+					<option value="0">Отключен</option>
+					<option value="1">REDIRECT_URL</option>
+					<option value="2">SCRIPT_URL</option>
+					<option value="3">getenv('REQUEST_URI')</option>	
+					<option value="4">HTTP_X_REWRITE_URL</option>	
+				</field>
+				<field name="sp_charset" type="list" default="0" label="Кодировка" description="Если на Вашем сайте используется кодировка русских букв, отличная от windows-1251, то необходимо выбрать используемую кодировку.">
+					<option value="0">По умолчанию</option>
+					<option value="1">CP1251</option>
+					<option value="2">UTF-8</option>
+				</field>
+				<field name="sp_link_count" type="text" default="0" label="Количество ссылок" description="Количество ссылок показываемых в модуле. 0 - все. Внимание последний блок должен показывать все ссылки."/>
+
+				<field name="sp_force_show_code" type="list" default="0" label="Показывать всем проверочный код" description="При включеннрм кэшировании не всегда sape может получить проверочный код. Для решения проблемы когда sape упорно не видет установленный код включите эту опцию.">
+					<option value="0">По умолчанию</option>
+					<option value="1">Отключено</option>
+					<option value="2">Включено</option>
+				</field>
+
+				<field name="sp_verbose" type="list" default="0" label="Включить вывод ошибок" description="Включить вывод ошибок кода Sape">
+					<option value="0">По умолчанию</option>
+					<option value="1">Отключено</option>
+					<option value="2">Включено</option>
+				</field>
+
+				<field name="sp_debug" type="list" default="0" label="Включить отладочную информации" description="Включить отладочную информации кода Sape">
+					<option value="0">По умолчанию</option>
+					<option value="1">Отключено</option>
+					<option value="2">Включено</option>
+				</field>
+
+				<field name="sp_hide_empty" type="list" default="0" label="Скрывать проверочный код" description="Скрывает проверочный код Sape. Внимание должен быть включен при индексации.">
+					<option value="0">Отключен</option>
+					<option value="1">Включен</option>
+				</field>
+
+				<field name="sp_show_host" type="list" default="0" label="Передача хоста" description="Передает Sape название хоста">
+					<option value="0">Отключен</option>
+					<option value="1">Ручная установка</option>
+				</field>
+
+				<field name="sp_show_host_text" type="text" default="" label="URL хоста без http://" description="Используется если выбрана 'Ручная установка' в 'Передача хоста'" />
+				<field name="sp_show_document_root" type="text" default="" label="DOCUMENT_ROOT" description="Если у Вас неправильно определяется $_SERVER['DOCUMENT_ROOT'] или вообще не определяется напишите его значение здесь." />
+
+				<field name="sp_show_header" type="list" default="0" label="Самостоятельный вывод модуля" description="Включает функцию показа заголовка только в случае наличия ссылок. Внимание при некорректном отображении потребуется правка шаблона.">
+					<option value="0">Отключен</option>
+					<option value="1">Включен</option>
+				</field>
+
+				<field name="sp_debug_mode" type="list" default="0" label="Режим отладки" description="Режим отладки используйте при настройке модулей для распределения ссылок по разным местам.">
+					<option value="0">Отключен</option>
+					<option value="1">Включен - минимальный</option>
+					<option value="2">Включен - нормальный</option>
+					<option value="3">Включен - максимальный $_ENV, $_SERVER</option>
+				</field>
+				<field name="moduleclass_sfx" type="text" default="" label="Суффикс класса модуля" description="Суффикс, который будет использован в описании класса (table.moduletable) таблицы стилей (CSS) модуля. Это позволяет использовать индивидуальный стиль модуля." />
+			</fieldset>
+			<fieldset name="advanced">
+				<field name="sp_show_nolinks" type="list" default="1" label="Показывать альтернативное содержимое" description="Показывать альтернативное содержимое если нету ссылок для показа.">
+					<option value="0">Отключен</option>
+					<option value="1">Включен</option>
+				</field>
+
+				<field name="sp_nolinks" type="textarea" cols="50" rows="20" filter="raw" default="Электронные книги &lt;a href=&quot;http://www.kindle-ru.ru/&quot; target=&quot;_blank&quot;&gt;Amazon Kindle в России&lt;/a&gt;.&lt;br /&gt; &lt;a href=&quot;http://www.spec-odezda.ru/&quot; target=&quot;_blank&quot;&gt;Рабочая одежда&lt;/a&gt; в Омске и омской области" label="Альтернативное содержимое" description="Альтернативное содержимое - используется если на странице нет проданных ссылок." />
+			</fieldset>
+		</fields>
+  </config>
+</extension>
