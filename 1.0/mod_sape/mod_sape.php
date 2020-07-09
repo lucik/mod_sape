@@ -1,6 +1,6 @@
 <?php
 /*
-(c) Andrew J. Lutsenko, http://blog.yousoft.ru, http://soft.vomske.ru
+(c) Andrew J. Lutsenko, http://www.yousoft.ru
 */
 
 // ensure this file is being included by a parent file
